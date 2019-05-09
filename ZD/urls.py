@@ -14,8 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
+from inquisitor.views import DetectiveAgencyDetailView, DetectiveAgencyListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    re_path(r'^agencja/(?P<slug>[-\w]+)/$', DetectiveAgencyDetailView.as_view(), name='agency-detail'),
+    re_path(r'^$', DetectiveAgencyListView.as_view()),
 ]

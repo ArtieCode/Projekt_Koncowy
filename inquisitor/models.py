@@ -58,11 +58,11 @@ class DetectiveAgency(models.Model):
 
     # Identification
 
-    company_id = models.CharField(max_length=10, primary_key=True)
+    company_id = models.CharField(max_length=50, primary_key=True)
 
     # Registry Link:
 
-    registry_id = models.OneToOneField(to=DetectiveAgencyRecord,
+    registry = models.OneToOneField(to=DetectiveAgencyRecord,
                                        null=True,
                                        blank=True,
                                        on_delete=models.DO_NOTHING)
@@ -74,19 +74,24 @@ class DetectiveAgency(models.Model):
     def create_image_path_logo(self):
         return f"{self.company_id}/{self.company_slug}-logo"
 
+    def get_absolute_url(self):
+        print('returning slug')
+        return f'/{self.company_slug}'
+
     # Public Profile - data:
 
     company_name = models.CharField(max_length=250)
-    company_slug = models.SlugField(max_length=300, unique=True)
+    slug = models.SlugField(max_length=300, unique=True)
     logo = models.ImageField(upload_to=create_image_path_logo, null=True)
     description_short = models.CharField(max_length=500, null=True)
     description_long = models.CharField(max_length=5000, null=True)
     main_contact_email = models.CharField(max_length=50, null=True)
     main_telephone_number = models.CharField(max_length=50, null=True)
 
-    # Public Profile - flags:
+    # Public Profile - services flags:
     offers_services_marital = models.BooleanField(default=False)
     offers_services_business = models.BooleanField(default=False)
+    offers_services_debt = models.BooleanField(default=False)
     offers_services_missing = models.BooleanField(default=False)
     offers_services_observation = models.BooleanField(default=False)
     offers_services_digital = models.BooleanField(default=False)
@@ -101,7 +106,7 @@ class DetectiveAgency(models.Model):
     # Default Behaviour Overrides:
 
     def save(self, *args, **kwargs):
-        self.company_slug = self.slugify_company()
+        self.slug = self.slugify_company()
         super(DetectiveAgency, self).save(*args, **kwargs)
 
 

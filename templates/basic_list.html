@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Lista licencjonowanych agencji detektywistycznych</h1>
+  {% if object_list %}
+  <ul>
+    {% for agency in object_list %}
+      <li>
+        <a href="/agencja/{{ agency.slug }}">{{ agency.company_name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>Nie znaleziono żadnych agencji detektywistycznych</p>
+  {% endif %}
+</body>
+</html>

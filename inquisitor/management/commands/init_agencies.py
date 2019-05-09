@@ -5,12 +5,12 @@ class AgencyInitializer:
 
     def __init__(self, new_company_id, entry_ID, firm_name):
         self.company_id = new_company_id
-        self.registry_id = entry_ID
+        self.registry = DetectiveAgencyRecord.objects.get(entry_ID=entry_ID)
         self.company_name = firm_name
 
         self.defaults = {
             'company_id': self.company_id,
-            'registry_id': self.registry_id,
+            'registry': self.registry,
             'company_name': self.company_name
 
             }
@@ -22,13 +22,13 @@ class Command(BaseCommand):
         all_records = DetectiveAgencyRecord.objects.all()
         print(f'Found {len(all_records)} registry records, attempting to create related agencies')
         company_id_prefix = "ZD00"
-        counter = 0
+        counter = 1000
         created = 0
         updated = 0
 
         for record in all_records:
 
-            new_company_id = company_id_prefix + counter
+            new_company_id = company_id_prefix + str(counter)
             counter += 1
             entry_ID = record.entry_ID
             firm_name = record.firm_name
@@ -40,7 +40,7 @@ class Command(BaseCommand):
             else:
                 updated += 1
             if counter % 100 == 0:
-                print(f'{counter} records processed...')
+                print(f'{counter-1000} records processed...')
 
         print(f'{created} records created, {updated} records updated.')
 
