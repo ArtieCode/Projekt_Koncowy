@@ -16,9 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from inquisitor.views import DetectiveAgencyDetailView, DetectiveAgencyListView
+from inquisitor.api_views import NearestAgenciesAPIView
+
+from rest_framework import routers
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^agencja/(?P<slug>[-\w]+)/$', DetectiveAgencyDetailView.as_view(), name='agency-detail'),
     re_path(r'^$', DetectiveAgencyListView.as_view()),
+    path('agencyapi', NearestAgenciesAPIView.as_view())
 ]
