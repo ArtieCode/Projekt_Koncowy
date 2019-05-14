@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
 from django.contrib.contenttypes.models import ContentType
+from django.db.models.expressions import RawSQL
 from django.utils.text import slugify
 
 VOIVODSHIP = [
@@ -106,7 +107,7 @@ class DetectiveAgency(models.Model):
     # Default Behaviour Overrides:
 
     def save(self, *args, **kwargs):
-        self.slug = self.slugify_company()
+        self.company_slug = self.slugify_company()
         super(DetectiveAgency, self).save(*args, **kwargs)
 
 
@@ -118,13 +119,25 @@ class AgencyAddress(models.Model):
     post_code = models.CharField(max_length=10, null=True)
     city = models.CharField(max_length=100, null=True)
     voivodship = models.IntegerField(choices=VOIVODSHIP, null=True)
-    geocoding_string = models.CharField(max_length=200, null=True)
     geocoding_latitude = models.FloatField(null=True)
     geocoding_longitude = models.FloatField(null=True)
 
+    @classmethod
+    def with_distance(cls, lat, lon):
+        """
+        Adds to all queryset distance from lat lon (in km).
+        :param lat: latitude
+        :param lon: longitude
+        :return: repair queryset
+        """
+        query = f"""
+            SELECT 
+               6371 * acos( cos( radians(%s) ) * cos( radians( {AgencyAddress._meta.db_table}.geocoding_latitude )) 
+               * cos( radians( {AgencyAddress._meta.db_table}.geocoding_longitude ) - radians(%s)) + sin(radians(%s)) 
+               * sin( radians( {AgencyAddress._meta.db_table}.geocoding_latitude )))
 
-
-
+            """
+        return cls.objects.annotate(distance=RawSQL(query, (lat, lon, lat)))
 
 
 

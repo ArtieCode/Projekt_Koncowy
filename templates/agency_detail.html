@@ -5,7 +5,9 @@
 
   <p><strong>Opis</strong>{{ object.description_short }}</p> <!-- author detail link not yet defined -->
   <p><strong>Summary:</strong> {{ object.description_long }}</p>
-  <p><strong>Adres:</strong> {% for address in object.AgencyAddress_set.all %} {{ address }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+  <p><strong>Adresy:</strong></p>
+    <p>Adres rejestracji: {{ registered_address }}</p>
+    <p>Adres biura: {{ active_address }}</p>
 
   </div>
 {% endblock %}
