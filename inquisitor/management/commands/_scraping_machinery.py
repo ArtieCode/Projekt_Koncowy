@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
-
+import json
+from urllib.parse import urlencode
 url_core = "https://archiwumbip.mswia.gov.pl/bip/form/166,Rejestr-przedsiebiorcow-wykonujacych-dzialalnosc-regulowana-w-zakresie-uslug-det.html"
 
 
@@ -40,6 +41,60 @@ def scrape(starting_counter):
     result_list.pop(len(result_list)-1)
 
     return result_list
+
+
+
+import re
+import urllib.parse
+
+
+
+def get_single_address(string):
+    postcode_pattern = '\d{2}\s*[‒–—―‐-]\s*\d{3}|\d{5}'
+
+    raw_string = string
+    if raw_string is None:
+        raw_string = ''
+
+    def find_all_postcodes(string):
+        return re.findall(postcode_pattern, string)
+
+    postcodes = find_all_postcodes(raw_string)
+
+    number_of_postcodes = len(postcodes)
+
+    if number_of_postcodes == 0:
+        return ''
+    elif number_of_postcodes == 1:
+        address = raw_string
+    else:
+        return ''
+
+    return address
+
+
+def scrape_google(string):
+    url_core = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?'
+    url_settings_and_key = 'inputtype=textquery&fields=formatted_address&key=AIzaSyD-Voj4JLH8i_eQoiV-UhBiMDXsMjM8hfs'
+
+    mydict = {'input': string, 'inputtype': 'textquery',
+              'fields': 'formatted_address', 'key': 'AIzaSyD-Voj4JLH8i_eQoiV-UhBiMDXsMjM8hfs'}
+    url = url_core + urlencode(mydict)
+    print(url)
+
+    response = requests.get(url)
+    parsed_response = json.loads(response.content)
+    print(parsed_response)
+    status = parsed_response['status']
+    candidates = parsed_response['candidates']
+    if status != "OK":
+        print("something went wrong...")
+        return None
+    result_dict = candidates[0]
+    address = result_dict['formatted_address']
+    return address
+
+
 
 
 

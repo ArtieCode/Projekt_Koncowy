@@ -113,9 +113,10 @@ class DetectiveAgency(models.Model):
 class AgencyAddress(models.Model):
     address_type = models.IntegerField(choices=ADDRESS_TYPES)
     owner = models.ForeignKey(to=DetectiveAgency, on_delete=models.CASCADE)
-    street_address = models.CharField(max_length=100)
-    post_code = models.CharField(max_length=10)
-    city = models.CharField(max_length=100)
+    raw_address = models.CharField(max_length=200, default='')
+    street_address = models.CharField(max_length=100, null=True)
+    post_code = models.CharField(max_length=10, null=True)
+    city = models.CharField(max_length=100, null=True)
     voivodship = models.IntegerField(choices=VOIVODSHIP, null=True)
     geocoding_string = models.CharField(max_length=200, null=True)
     geocoding_latitude = models.FloatField(null=True)

@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Profil {{ DetectiveAgency.company_name }}</h1>
+  <h1>Profil {{ object.company_name }}</h1>
 
-  <p><strong>Opis</strong>{{ DetectiveAgency.description_short }}</p> <!-- author detail link not yet defined -->
-  <p><strong>Summary:</strong> {{ DetectiveAgency.description_long }}</p>
-  <p><strong>Adres:</strong> {% for address in DetectiveAgency.AgencyAddress_set.all %} {{ address }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+  <p><strong>Opis</strong>{{ object.description_short }}</p> <!-- author detail link not yet defined -->
+  <p><strong>Summary:</strong> {{ object.description_long }}</p>
+  <p><strong>Adres:</strong> {% for address in object.AgencyAddress_set.all %} {{ address }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
 
   </div>
 {% endblock %}
