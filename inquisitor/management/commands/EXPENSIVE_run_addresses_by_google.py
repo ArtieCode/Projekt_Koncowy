@@ -22,6 +22,7 @@ class Command(BaseCommand):
     help = 'Gets address strings for each agency, processes them via google, and saves to DB'
 
     def handle(self, *args, **options):
+        key = input('enter google api key: ')
         agencies = DetectiveAgency.objects.all()
         reg_added = 0
         active_added = 0
@@ -37,7 +38,7 @@ class Command(BaseCommand):
             if agency_record.registered_address !="":
                 processed_reg_address = get_single_address(agency_record.registered_address)
                 if processed_reg_address !="":
-                    scraped_address = scrape_google(processed_reg_address)
+                    scraped_address = scrape_google(processed_reg_address, key)
                     if scraped_address is None:
                         pass
                     else:
@@ -57,7 +58,7 @@ class Command(BaseCommand):
                     active_address = agency_record.active_addresses
                     processed_active_address = get_single_address(active_address)
                     if processed_active_address != "":
-                        scraped_address = scrape_google(processed_active_address)
+                        scraped_address = scrape_google(processed_active_address, key)
                         if scraped_address is None:
                             pass
                         else:

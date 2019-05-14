@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'inquisitor.apps.InquisitorConfig',
-    # 'inquisitor.apps.OrganizationsConfig'
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

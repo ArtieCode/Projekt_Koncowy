@@ -29,11 +29,14 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
+        key = input("enter Google API key: ")
+
         def google_geocode(string):
             url_core = 'https://maps.googleapis.com/maps/api/geocode/json?'
 
+
             params = {'address': string,
-                      'key': 'AIzaSyD-Voj4JLH8i_eQoiV-UhBiMDXsMjM8hfs'
+                      'key': key
                       }
             url = url_core + urlencode(params)
 

@@ -73,12 +73,10 @@ def get_single_address(string):
     return address
 
 
-def scrape_google(string):
+def scrape_google(string, key):
     url_core = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?'
-    url_settings_and_key = 'inputtype=textquery&fields=formatted_address&key=AIzaSyD-Voj4JLH8i_eQoiV-UhBiMDXsMjM8hfs'
-
     mydict = {'input': string, 'inputtype': 'textquery',
-              'fields': 'formatted_address', 'key': 'AIzaSyD-Voj4JLH8i_eQoiV-UhBiMDXsMjM8hfs'}
+              'fields': 'formatted_address', 'key': key}
     url = url_core + urlencode(mydict)
     print(url)
 

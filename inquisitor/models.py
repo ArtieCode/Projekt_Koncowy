@@ -110,7 +110,6 @@ class DetectiveAgency(models.Model):
         self.company_slug = self.slugify_company()
         super(DetectiveAgency, self).save(*args, **kwargs)
 
-
 class AgencyAddress(models.Model):
     address_type = models.IntegerField(choices=ADDRESS_TYPES)
     owner = models.ForeignKey(to=DetectiveAgency, on_delete=models.CASCADE)
