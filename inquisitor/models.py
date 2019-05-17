@@ -138,5 +138,9 @@ class AgencyAddress(models.Model):
             """
         return cls.objects.annotate(distance=RawSQL(query, (lat, lon, lat)))
 
-
+class ReferenceCity(models.Model):
+    city = models.CharField(max_length=100, null=True)
+    voivodship = models.IntegerField(choices=VOIVODSHIP, null=True)
+    geocoding_latitude = models.FloatField(null=True)
+    geocoding_longitude = models.FloatField(null=True)
 
