@@ -17,7 +17,6 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
         # Check if one of the User's groups is the company group
         for group in request.user.groups.all():
-            print(group.name)
             if group.name == obj.company_id:
                 allow_access = True
 
